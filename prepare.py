@@ -1,38 +1,34 @@
 import pandas as pd
 
-df = pd.read_pickle("raw_data.pkl")
+df = pd.read_pickle("edited.pkl")
 
-num_people = 32
-rows_per_person = 4
-date_columns = df.loc[0, 1:]  # 1열은 UID/nickname 자리로 비우고, 2열부터 날짜
+# interactive column deletion
+step = 5
+cols = df.columns.tolist()
+deleted_cols = []
 
-data_rows = []
+i = 0
+while i < len(cols):
+    current_chunk = cols[i:i+step]
+    print("\n👇 현재 열 그룹:")
+    for idx, col in enumerate(current_chunk):
+        print(f"  {idx}: {col}")
 
-for i in range(num_people):
-    base_row = 1 + i * rows_per_person  # 한 사람의 첫 줄
-    uid = df.loc[base_row, 0]           # A열: UID
-    nickname = df.loc[base_row, 1]      # B열: 닉네임
+    # 입력 받기
+    to_delete = input("삭제할 열 번호를 쉼표로 입력하세요 (건너뛰려면 엔터): ")
+    if to_delete.strip():
+        try:
+            indices = [int(x.strip()) for x in to_delete.split(',')]
+            drop_cols = [current_chunk[j] for j in indices if 0 <= j < len(current_chunk)]
+            df = df.drop(columns=drop_cols)
+            deleted_cols.extend(drop_cols)
+        except ValueError:
+            print("잘못된 입력입니다. 숫자를 쉼표로 구분해서 입력하세요.")
+    else:
+        print("열 삭제 건너뜀.")
 
-    for col in range(2, df.shape[1]):  # 날짜 데이터 시작열부터 반복
-        date = df.loc[0, col]  # 날짜는 0행에 있음
+    i += step
 
-        evaluation = df.loc[base_row, col]       # 평가 (선택적으로 무시 가능)
-        daily = df.loc[base_row + 1, col]
-        cumulative = df.loc[base_row + 2, col]
-        score = df.loc[base_row + 3, col]
-
-        data_rows.append({
-            "UID": uid,
-            "nickname": nickname,
-            "날짜": date,
-            "누적점수": score,
-            "누적공적": cumulative,
-            "일일공적": daily
-        })
-
-# 데이터프레임으로 변환
-result_df = pd.DataFrame(data_rows)
-
-# 저장
-result_df.to_csv("정리된_데이터.csv", index=False)
-
+# 최종 결과
+df.to_pickle("edited.pkl")
+print("✅ 편집된 DataFrame이 'edited.pkl'로 저장되었습니다.")
