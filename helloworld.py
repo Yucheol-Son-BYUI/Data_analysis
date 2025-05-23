@@ -4,7 +4,8 @@ from tabulate import tabulate
 # df = pd.read_csv("edited.csv")
 # print(df.head(10))
 
-df = pd.read_csv("preprocessed_data3.csv")
+df = pd.read_pickle("preprocessed_data6.pkl")
+df['essential_merit'] = df['essential_merit'].round(-1).astype('int32')
 print(df)
 
 chunk_size = 5

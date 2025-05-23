@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow.keras import Input, Model
 from tensorflow.keras.layers import Dense
 
-# ─── 1) 모델 정의 ───────────────────────────────────────────
+# ─── 1) define model ───────────────────────────────────────────
 inputs = Input(shape=(2,), name="inputs")
 x = Dense(8, activation='relu', name="hidden_1")(inputs)
 x = Dense(16, activation='relu', name="hidden_2")(x)
