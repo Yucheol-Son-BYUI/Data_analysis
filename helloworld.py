@@ -5,7 +5,7 @@ from tabulate import tabulate
 # print(df.head(10))
 
 # CSV 파일 불러오기
-df = pd.read_csv("preprocessed_data.csv")
+df = pd.read_csv("preprocessed_data3.csv")
 print(df)
 
 chunk_size = 5

@@ -1,7 +1,6 @@
 import pandas as pd
 
 
-# CSV 파일 불러오기
 df = pd.read_csv("final_processed_with_features.csv")
 
 df.drop(['prev_date', 'prev_score', '일일공적', '누적공적', '누적점수'], axis=1, inplace=True)
