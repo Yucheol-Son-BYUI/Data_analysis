@@ -11,6 +11,8 @@ print(df)
 chunk_size = 5
 total_rows = len(df)
 
+
+
 for start in range(0, total_rows, chunk_size):
   end = min(start + chunk_size, total_rows)
   chunk = df.iloc[start:end]
